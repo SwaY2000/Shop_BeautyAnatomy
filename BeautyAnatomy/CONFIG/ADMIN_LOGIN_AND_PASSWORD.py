@@ -1,0 +1,1 @@
+MAIN_ADMIN = {'login': 'danil', 'password': 123456789}

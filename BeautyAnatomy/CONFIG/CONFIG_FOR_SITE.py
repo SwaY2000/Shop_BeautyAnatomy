@@ -1,0 +1,1 @@
+VALID_RESOLUTION = {'min': 400, 'max': 2000}

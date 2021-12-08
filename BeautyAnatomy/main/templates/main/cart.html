@@ -1,0 +1,174 @@
+{% extends 'main/base.html' %}
+{% load static %}
+{% block content %}
+  <!--================Cart Area =================-->
+  <section class="cart_area">
+      <div class="container">
+          <div class="cart_inner">
+              <div class="table-responsive">
+                  <table class="table">
+                      <thead>
+                          <tr>
+                              <th scope="col">Продукт</th>
+                              <th scope="col">Цена</th>
+                              <th scope="col">Количество</th>
+                              <th scope="col"></th>
+                              <th scope="col">Общая сумма</th>
+                              <th scope="col"></th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                      {% for item in cart.products.all %}
+                          <tr>
+                              <td class="w-25">
+                                  <div class="media">
+                                      <div class="d-flex">
+                                          <img src="{{ item.content_object.image.url }}" alt="" class="img-fluid">
+                                      </div>
+                                      <div class="media-body">
+                                          <p>{{ item.content_object.title }}</p>
+                                      </div>
+                                  </div>
+                              </td>
+                              <td>
+                                  <h5>{{ item.content_object.price }} грн</h5>
+                              </td>
+                              <td>
+                                  <div class="product_count">
+                                      <form action="{% url 'change_qty' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}" method="POST">
+                                      {% csrf_token %}
+                                      <input type="text" name="qty" id="sst" maxlength="12" value='{{ item.qty }}' title="Количество:"
+                                          class="input-text qty" readonly>
+                                      <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst )) result.value++;return false;"
+                                          class="increase items-count" type="button">
+                                          <i class="lnr lnr-chevron-up"></i></button>
+                                      <button onclick="var result = document.getElementById('sst'); var sst = result.value; if( !isNaN( sst ) &amp;&amp; sst > 0 ) result.value--;return false;"
+                                          class="reduced items-count" type="button">
+                                            <i class="lnr lnr-chevron-down"></i></button>
+                              <td>
+                                  <button style="
+                                        background-color: #4CAF50;
+                                        border: none;
+                                        color: white;
+                                        height:40px;
+                                        width:40px;
+                                        text-align: center;
+                                        text-decoration: none;
+                                        display: inline-block;
+                                        font-size: 16px;"
+                                        type="submit">
+                                            <i class="fa fa-check" aria-hidden="true"></i>
+                                  </button>
+                                        </form>
+                                  </div>
+
+                              </td>
+
+
+                              </td>
+                              <td>
+                                  <h5>{{ item.final_price }}</h5>
+                              </td>
+                              <td>
+                                  <a href="{% url 'delete_from_cart' ct_model=item.content_object.get_model_name slug=item.content_object.slug %}">
+                                      <button class='btn btn-danger' style="height:40px;width:40px; align-items: center">
+                                         <i class="fa fa-trash" aria-hidden="true"></i>
+                                      </button>
+                                  </a>
+                              </td>
+                      {% endfor %}
+                          </tr>
+<!--                      <tr class="bottom_button">-->
+<!--                          <td>-->
+<!--                              <a class="button" href="#">Update Cart</a>-->
+<!--                          </td>-->
+<!--                          <td>-->
+
+<!--                          </td>-->
+<!--                          <td>-->
+
+<!--                          </td>-->
+<!--                          <td>-->
+<!--                              <div class="cupon_text d-flex align-items-center">-->
+<!--                                  <input type="text" placeholder="Coupon Code">-->
+<!--                                  <a class="primary-btn" href="#">Apply</a>-->
+<!--                                  <a class="button" href="#">Have a Coupon?</a>-->
+<!--                              </div>-->
+<!--                          </td>-->
+<!--                      </tr>-->
+                      <tr>
+                          <td>
+
+                          </td>
+                          <td>
+
+                          </td>
+                          <td>
+                              <h5>Общая цена</h5>
+                          </td>
+                          <td>
+                              <h5>{{ cart.final_price }} грн </h5>
+                          </td>
+                          <td>
+                              <a href="{% url 'checkout' %}" type="button" class="primary-btn ml-2">Оформить заказ</a>
+                          </td>
+                          </tr>
+<!--                          <tr class="shipping_area">-->
+<!--                              <td class="d-none d-md-block">-->
+
+<!--                              </td>-->
+<!--                              <td>-->
+
+<!--                              </td>-->
+<!--                              <td>-->
+<!--                                  <h5>Shipping</h5>-->
+<!--                              </td>-->
+<!--                              <td>-->
+<!--                                  <div class="shipping_box">-->
+<!--                                      <ul class="list">-->
+<!--                                          <li><a href="#">Flat Rate: $5.00</a></li>-->
+<!--                                          <li><a href="#">Free Shipping</a></li>-->
+<!--                                          <li><a href="#">Flat Rate: $10.00</a></li>-->
+<!--                                          <li class="active"><a href="#">Local Delivery: $2.00</a></li>-->
+<!--                                      </ul>-->
+<!--                                      <h6>Calculate Shipping <i class="fa fa-caret-down" aria-hidden="true"></i></h6>-->
+<!--                                      <select class="shipping_select">-->
+<!--                                          <option value="1">Bangladesh</option>-->
+<!--                                          <option value="2">India</option>-->
+<!--                                          <option value="4">Pakistan</option>-->
+<!--                                      </select>-->
+<!--                                      <select class="shipping_select">-->
+<!--                                          <option value="1">Select a State</option>-->
+<!--                                          <option value="2">Select a State</option>-->
+<!--                                          <option value="4">Select a State</option>-->
+<!--                                      </select>-->
+<!--                                      <input type="text" placeholder="Postcode/Zipcode">-->
+<!--                                      <a class="gray_btn" href="#">Update Details</a>-->
+<!--                                  </div>-->
+<!--                              </td>-->
+<!--                          </tr>-->
+<!--                          <tr class="out_button_area">-->
+<!--                              <td class="d-none-l">-->
+
+<!--                              </td>-->
+<!--                              <td class="">-->
+
+<!--                              </td>-->
+<!--                              <td>-->
+
+<!--                              </td>-->
+<!--                              <td>-->
+<!--                                  <div class="checkout_btn_inner d-flex align-items-center">-->
+<!--                                      <a class="gray_btn" href="#">Continue Shopping</a>-->
+<!--                                      <a class="primary-btn ml-2" href="#">Proceed to checkout</a>-->
+<!--                                  </div>-->
+<!--                              </td>-->
+<!--                          </tr>-->
+                      </tbody>
+                  </table>
+              </div>
+          </div>
+      </div>
+  </section>
+  <!--================End Cart Area =================-->
+{% endblock %}
